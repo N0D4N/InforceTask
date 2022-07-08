@@ -1,0 +1,32 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">Redirects to</th>
+    <th scope="col">Short version</th>
+    <th *ngIf="isLoggedIn" scope="col">More info</th>
+    <th *ngIf="isLoggedIn" scope="col">Delete</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let url of urls$ | async">
+    <th scope="row"><a href="{{url.destination}}">{{url.destination}}</a></th>
+    <th><a [queryParams]="{id: url.id}" [routerLink]="['/rdr']">{{url.id}}</a></th>
+    <th>
+      <button *ngIf="isLoggedIn" [queryParams]="{id: url.id}" [routerLink]="['/url']" class="btn">View {{url.id}}</button>
+    </th>
+    <th *ngIf="isLoggedIn && (url.creator.id == userId || isAdmin)">
+      <button (click)="deleteUrl(url)"> Delete</button>
+    </th>
+  </tr>
+  <tr *ngIf="isLoggedIn">
+    <th scope="row"><input [(ngModel)]="newUrl" class="form-control" name="newUrlToCreate" type="text">
+    </th>
+    <th>
+      <div class="input-group-append">
+        <button (click)="createUrl()" class="form-control btn btn-success">Add url</button>
+      </div>
+    </th>
+  </tr>
+  </tbody>
+</table>

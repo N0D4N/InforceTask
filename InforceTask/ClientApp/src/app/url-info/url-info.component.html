@@ -1,0 +1,26 @@
+<table class="table">
+  <thead class="thead-dark">
+  <tr>
+    <th scope="col">
+      Redirects to
+    </th>
+    <th scope="col">
+      Id
+    </th>
+    <th scope="col">
+      Creator username
+    </th>
+    <th scope="col">
+      Created at
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <th scope="row">{{urlInfo.destination}}</th>
+    <th><a [queryParams]="{id: urlInfo.id}" [routerLink]="['/rdr']">{{urlInfo.id}}</a></th>
+    <th>{{urlInfo.creator.username}}</th>
+    <th>{{creationDate}}</th>
+  </tr>
+  </tbody>
+</table>

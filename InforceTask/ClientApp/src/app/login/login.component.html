@@ -1,0 +1,44 @@
+<div class="container">
+  <div class="row m-3 justify-content-center">
+    <h2>Login</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <div class="card card-container p-3">
+        <form #ngLoginForm="ngForm" (ngSubmit)="ngLoginForm.form.valid && onSubmit()" *ngIf="!isLoggedIn" name="form"
+              novalidate>
+          <div class="for m-group mt-xxl-2">
+            <label for="username">Username</label>
+            <input #username="ngModel" [(ngModel)]="loginRequest.username" class="form-control" name="text" required
+                   type="text"/>
+            <div *ngIf="ngLoginForm.submitted && username.errors" class="alert alert-danger" role="alert">
+              username is required!
+            </div>
+          </div>
+          <div class="form-group mt-xxl-2">
+            <label for="password">Password</label>
+            <input #password="ngModel" [(ngModel)]="loginRequest.password" class="form-control" name="password" required
+                   type="password"/>
+            <div *ngIf="ngLoginForm.submitted && password.errors" class="alert alert-danger" role="alert">
+              <div *ngIf="password.errors['required']">Password is required</div>
+            </div>
+          </div>
+          <div class="form-check mt-xxl-3 md-xxl-3 p-0">
+            <label for="shouldBeAdmin">Is admin</label>
+            <input [(ngModel)]="loginRequest.shouldBeAdmin" [value]="true" name="shouldBeAdmin" required type="radio">
+          </div>
+          <div class="form-group">
+            <button class="btn btn-primary btn-block">
+              Login
+            </button>
+          </div>
+          <div class="form-group">
+            <div *ngIf="ngLoginForm.submitted && isLoginFailed" class="alert alert-danger" role="alert">
+              Login failed: {{ error }}
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
