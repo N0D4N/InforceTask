@@ -4,6 +4,7 @@ import {TokenService} from '../services/token.service';
 import {UserService} from '../services/user.service';
 import {LoginRequest} from "../contracts/requests/login-request";
 import {FailedResponse} from "../contracts/responses/failed-response";
+import {Form, FormBuilder, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-login',
@@ -18,8 +19,6 @@ export class LoginComponent implements OnInit {
     shouldBeAdmin: false
   };
 
-  isLoggedIn = false;
-  isLoginFailed = false;
   error: FailedResponse = {errors: []};
 
   constructor(private userService: UserService, private tokenService: TokenService, private router: Router) {
@@ -29,26 +28,20 @@ export class LoginComponent implements OnInit {
     let isLoggedIn = this.tokenService.isLoggedIn();
     console.log(`isLoggedIn: ${isLoggedIn}`);
     if (isLoggedIn) {
-      this.isLoggedIn = true;
-
-      this.router.navigate(['urls']);
+      this.router.navigate(['/']);
     }
   }
 
-  onSubmit(): void {
+  onSubmit(form: FormGroup): void {
 
     this.userService.login(this.loginRequest).subscribe({
       next: (data => {
         console.debug(`logged in successfully ${data}`);
         this.tokenService.saveSession(data);
-        this.isLoggedIn = true;
-        this.isLoginFailed = false;
         this.reloadPage();
       }),
       error: ((error: FailedResponse) => {
         this.error = error;
-        this.isLoggedIn = false;
-        this.isLoginFailed = true;
       })
 
     });

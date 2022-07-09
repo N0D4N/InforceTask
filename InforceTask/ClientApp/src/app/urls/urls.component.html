@@ -20,13 +20,16 @@
     </th>
   </tr>
   <tr *ngIf="isLoggedIn">
-    <th scope="row"><input [(ngModel)]="newUrl" class="form-control" name="newUrlToCreate" type="text">
+    <th scope="row"><input [(ngModel)]="newUrl" class="form-control" name="newUrlToCreate" type="text" (keyup)="checkValidity(newUrl)">
     </th>
     <th>
       <div class="input-group-append">
         <button (click)="createUrl()" class="form-control btn btn-success">Add url</button>
       </div>
     </th>
+  </tr>
+  <tr *ngIf="!isValidUrl">
+    <div class="alert-secondary alert">Not a valid url</div>
   </tr>
   </tbody>
 </table>

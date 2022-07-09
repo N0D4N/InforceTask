@@ -1,5 +1,5 @@
 export interface AboutPageContentsResponse {
   content:string;
   editNumber: number;
-  LastEditDateTime: Date;
+  lastEditDateTime: Date;
 }

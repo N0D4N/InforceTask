@@ -1,5 +1,7 @@
+using InforceTask.Contracts.Requests;
 using InforceTask.Contracts.Responses;
-using InforceTask.Services;
+using InforceTask.Domain;
+using InforceTask.Domain.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,14 +18,14 @@ public sealed class AboutPageController : InforceBaseApiController
 
 	[Authorize]
 	[HttpPost(Constants.Routes.About.Edit)]
-	public IActionResult Edit([FromBody] string contents)
+	public async Task<IActionResult> EditAsync(EditAboutPageRequest request)
 	{
-		if (!this.User.HasClaim(x => x.Type == Constants.ClaimTypes.Admin))
+		if (!this.User.HasClaim(x => x.Type == ClaimTypes.Admin))
 		{
 			return this.Unauthorized();
 		}
 
-		var result = this._aboutRedactorService.ChangeAboutPageContentsTo(contents);
+		var result = await this._aboutRedactorService.ChangeAboutPageContentsAsync(request);
 		return this.Ok(new AboutPageContentsResponse()
 		{
 			Content = result.Content,
@@ -33,9 +35,9 @@ public sealed class AboutPageController : InforceBaseApiController
 	}
 
 	[HttpGet(Constants.Routes.About.Current)]
-	public IActionResult Current()
+	public async Task<IActionResult> CurrentAsync()
 	{
-		var result = this._aboutRedactorService.GetCurrentAboutPageContents();
+		var result = await this._aboutRedactorService.GetCurrentAboutPageContentsAsync();
 		return this.Ok(new AboutPageContentsResponse()
 		{
 			Content = result.Content,

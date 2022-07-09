@@ -17,18 +17,17 @@ export class UrlsComponent implements OnInit {
   newUrl: string = '';
   userId: string = '';
   isAdmin: boolean = false;
-
+  isValidUrl: boolean = true;
   constructor(private tokenService: TokenService, private urlService: UrlService) {
   }
 
-  static isValidUrl(destination: string) {
-    try {
-      const url = new URL(destination);
-      return url.protocol.startsWith("http");
-
-    } catch (_) {
-      return false;
+  checkValidity(destination: string): boolean {
+    if(destination === ""){
+      return true;
     }
+    const res = destination.match(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g) != null;
+    this.isValidUrl = res;
+    return res;
   }
 
   ngOnInit(): void {
@@ -46,8 +45,10 @@ export class UrlsComponent implements OnInit {
   }
 
   createUrl() {
-    if (this.newUrl && UrlsComponent.isValidUrl(this.newUrl)) {
-      this.urlService.createShortenedUrl({destination: this.newUrl}).subscribe(() => this.urls$ = this.urlService.getAllShortenedUrls().pipe(map(v => v.data)));
+    if (this.newUrl) {
+      if (this.checkValidity(this.newUrl)) {
+        this.urlService.createShortenedUrl({destination: this.newUrl}).subscribe(() => this.urls$ = this.urlService.getAllShortenedUrls().pipe(map(v => v.data)));
+      }
     }
   }
 }

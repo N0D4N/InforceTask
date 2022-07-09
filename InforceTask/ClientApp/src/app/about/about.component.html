@@ -1,0 +1,8 @@
+<div>
+  <h1>Current revision #{{editNumber!}} Last Edit {{lastEditDateTime.toLocaleString()}}</h1>
+  <div *ngIf="!editing" (click)="isEditable() ? editing = true : null" style="text-align: justify">{{content}}</div>
+  <form *ngIf="editing">
+    <textarea spellcheck="false" [(ngModel)]="content" name="content" class="form-control text-justify" type="text" autosize></textarea>
+    <button type="button" class="btn btn-primary"  (click)=" editing = false;updateCurrentAboutPage()" > Update about page</button>
+  </form>
+</div>

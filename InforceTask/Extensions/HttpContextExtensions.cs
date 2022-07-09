@@ -1,3 +1,5 @@
+using InforceTask.Domain;
+
 namespace InforceTask.Extensions;
 
 public static class HttpContextExtensions
@@ -9,6 +11,6 @@ public static class HttpContextExtensions
 			return null;
 		}
 
-		return Guid.Parse(httpContext.User.Claims.First(x => x.Type == Constants.ClaimTypes.Id).Value);
+		return Guid.Parse(httpContext.User.Claims.First(x => x.Type == ClaimTypes.Id).Value);
 	}
 }

@@ -28,22 +28,8 @@ public static class Constants
 
 			public const string Url = "url";
 
-			public const string UrlWithIdentifier = $"{Url}/{{Id}}";
+			public const string UrlWithIdentifier = $"{Url}/{{id}}";
 		}
 	}
 
-	public static class ClaimTypes
-	{
-		public const string Id = System.Security.Claims.ClaimTypes.NameIdentifier;
-
-		public const string Username = "Username";
-
-		public const string Admin = "Admin";
-
-		public const string JwtId = JwtRegisteredClaimNames.Jti;
-
-		public const string JwtSubject = JwtRegisteredClaimNames.Sub;
-
-		public const string JwtExpiration = JwtRegisteredClaimNames.Exp;
-	}
 }

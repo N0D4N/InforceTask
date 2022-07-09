@@ -1,7 +1,7 @@
 using InforceTask.Contracts.Requests;
 using InforceTask.Contracts.Responses;
+using InforceTask.Domain.Services;
 using InforceTask.Extensions;
-using InforceTask.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,12 +18,12 @@ public sealed class UrlsController : InforceBaseApiController
 
 	[HttpGet(Constants.Routes.Urls.All)]
 	[ProducesResponseType(typeof(AllShortenedUrlsResponse), 200)]
-	public IActionResult GetAllUrls()
+	public async Task<IActionResult> GetAllUrlsAsync()
 	{
-		var shortenedUrls = this._urlService.GetAll();
+		var shortenedUrls = await this._urlService.GetAllAsync();
 		return this.Ok(new AllShortenedUrlsResponse
 		{
-			Data = shortenedUrls.Select(x => new ShortenedUrlResponse(x)).ToArray()
+			Data = shortenedUrls.Select(x => x.ToShortenedUrlResponse()).ToArray()
 		});
 	}
 
@@ -31,7 +31,7 @@ public sealed class UrlsController : InforceBaseApiController
 	[Authorize]
 	[ProducesResponseType(typeof(CreateShortenedUrlResponse), 200)]
 	[ProducesErrorResponseType(typeof(FailedResponse))]
-	public IActionResult CreateUrl([FromBody] CreateShortenedUrlRequest request)
+	public async Task<IActionResult> CreateUrlAsync([FromBody] CreateShortenedUrlRequest request)
 	{
 		var userId = this.HttpContext.GetUserId();
 		if (userId is null)
@@ -39,12 +39,12 @@ public sealed class UrlsController : InforceBaseApiController
 			return this.Unauthorized();
 		}
 
-		var shortenedUrlCreationResult = this._urlService.CreateShortenedUrl(request.Destination, userId.Value);
+		var shortenedUrlCreationResult = await this._urlService.CreateShortenedUrlAsync(request.Destination, userId.Value);
 		if (shortenedUrlCreationResult.Success)
 		{
 			return this.Ok(new CreateShortenedUrlResponse
 			{
-				Data = new(shortenedUrlCreationResult.Data)
+				Data = shortenedUrlCreationResult.Data.ToShortenedUrlResponse()
 			});
 		}
 
@@ -58,7 +58,7 @@ public sealed class UrlsController : InforceBaseApiController
 	[Authorize]
 	[ProducesResponseType(typeof(OkResult), 200)]
 	[ProducesErrorResponseType(typeof(FailedResponse))]
-	public IActionResult DeleteUrl(string Id)
+	public async Task<IActionResult> DeleteUrlAsync(string id)
 	{
 		var userId = this.HttpContext.GetUserId();
 		if (userId is null)
@@ -66,21 +66,21 @@ public sealed class UrlsController : InforceBaseApiController
 			return this.Unauthorized();
 		}
 
-		var shortenedUrlDeletionResult = this._urlService.DeleteUrl(Id, userId.Value);
+		var shortenedUrlDeletionResult = await this._urlService.DeleteUrlAsync(id, userId.Value);
 		return this.MapDomainResult(shortenedUrlDeletionResult);
 	}
 
 	[HttpGet(Constants.Routes.Urls.UrlWithIdentifier)]
 	[ProducesResponseType(typeof(ShortenedUrlInfoResponse), 200)]
 	[ProducesErrorResponseType(typeof(FailedResponse))]
-	public IActionResult GetUrlInfo(string Id)
+	public async Task<IActionResult> GetUrlInfoAsync(string id)
 	{
-		var shortenedUrl = this._urlService.GetShortUrl(Id);
+		var shortenedUrl = await this._urlService.GetShortUrlAsync(id);
 		if (shortenedUrl.Success)
 		{
 			return this.Ok(new ShortenedUrlInfoResponse
 			{
-				Data = new(shortenedUrl.Data)
+				Data = shortenedUrl.Data.ToShortenedUrlResponse()
 			});
 		}
 

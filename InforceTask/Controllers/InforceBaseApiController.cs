@@ -1,5 +1,5 @@
 using InforceTask.Contracts.Responses;
-using InforceTask.Models;
+using InforceTask.Domain;
 using Microsoft.AspNetCore.Mvc;
 
 namespace InforceTask.Controllers;

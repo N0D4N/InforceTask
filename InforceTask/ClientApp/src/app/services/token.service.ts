@@ -67,7 +67,6 @@ export class TokenService {
   }
 
   logout() {
-    window.localStorage.removeItem('AT');
-    window.localStorage.removeItem('RT');
+    window.localStorage.clear();
   }
 }

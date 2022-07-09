@@ -15,11 +15,6 @@
     <ItemGroup>
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.6" />
         <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.6" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.6">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
         <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.1" />
         <PackageReference Include="Swashbuckle.AspNetCore.Filters" Version="7.0.3" />
     </ItemGroup>
@@ -29,6 +24,14 @@
         <Content Remove="$(SpaRoot)**" />
         <None Remove="$(SpaRoot)**" />
         <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\InforceTask.Contracts\InforceTask.Contracts.csproj" />
+      <ProjectReference Include="..\InforceTask.DataAccess.DbMigrator\InforceTask.DataAccess.DbMigrator.csproj" />
+      <ProjectReference Include="..\InforceTask.DataAccess\InforceTask.DataAccess.csproj" />
+      <ProjectReference Include="..\InforceTask.Domain.Services\InforceTask.Domain.Services.csproj" />
+      <ProjectReference Include="..\InforceTask.Domain\InforceTask.Domain.csproj" />
     </ItemGroup>
 
     <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
