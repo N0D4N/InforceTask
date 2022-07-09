@@ -5,7 +5,7 @@
   <div class="row">
     <div class="col-md-12">
       <div class="card card-container p-3">
-        <form #ngLoginForm="ngForm" (ngSubmit)="ngLoginForm.form.valid && onSubmit(ngLoginForm.form)" name="form"
+        <form #ngLoginForm="ngForm" (ngSubmit)="onSubmit(ngLoginForm.form)" name="form"
               novalidate>
           <div class="for m-group mt-xxl-2">
             <label for="username">Username</label>
@@ -15,7 +15,7 @@
           <div class="form-group mt-xxl-2">
             <label for="password">Password</label>
             <input #password="ngModel" [(ngModel)]="loginRequest.password" class="form-control" name="password" required
-                   type="password" pattern="^(?=.*[A-Z])(?=.*[0-9])(?=.*[a-z]).*$" minlength="6"/>
+                   type="password" pattern="^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])[0-9a-zA-Z]{8,}$" minlength="6"/>
           </div>
           <div class="form-check mt-xxl-3 md-xxl-3 p-0">
             <label for="shouldBeAdmin">Is admin</label>
